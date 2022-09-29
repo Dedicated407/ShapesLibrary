@@ -20,6 +20,7 @@ public class Triangle : IShape
     private readonly double _firstSide;
     private readonly double _secondSide;
     private readonly double _thirdSide;
+    private const double Epsilon = 0.000000001;
     
     public double FirstSide
     {
@@ -90,4 +91,28 @@ public class Triangle : IShape
         _firstSide + _secondSide <= _thirdSide ||
         _firstSide + _thirdSide <= _secondSide ||
         _secondSide + _thirdSide <= _firstSide;
+
+    /// <summary>
+    /// Является ли треугольник прямоугольным.
+    /// </summary>
+    /// <returns>Если треугольник прямоугольный - true, иначе - false</returns>
+    public bool IsRight()
+    {
+        var hypotenuse = Math.Max(_firstSide, Math.Max(_secondSide, _thirdSide));
+        var firstSidePow2 = Math.Pow(_firstSide, 2);
+        var secondSidePow2 = Math.Pow(_secondSide, 2);
+        var thirdSidePow2 = Math.Pow(_thirdSide, 2);
+
+        if (Math.Abs(hypotenuse - _firstSide) < Epsilon)
+        {
+            return Math.Abs(secondSidePow2 + thirdSidePow2 - firstSidePow2) < Epsilon;
+        }
+
+        if (Math.Abs(hypotenuse - _secondSide) < Epsilon)
+        {
+            return Math.Abs(firstSidePow2 + thirdSidePow2 - secondSidePow2) < Epsilon;
+        }
+        
+        return Math.Abs(firstSidePow2 + secondSidePow2 - thirdSidePow2) < Epsilon;
+    }
 }
